@@ -6,10 +6,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env.MY_AWS_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
+    accessKeyId: process.env.MY_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.MY_AWS_SECRET_KEY,
   },
 });
 
@@ -34,7 +34,7 @@ export const addCategory = async (req, res) => {
     if (file) {
       const fileName = `icons/${uuidv4()}_${file.name}`;
       const uploadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: process.env.MY_AWS_BUCKET_NAME,
         Key: fileName,
         Body: file.data,
         ContentType: file.mimetype,
@@ -64,7 +64,7 @@ export const updateCategory = async (req, res) => {
     if (file) {
       const fileName = `icons/${uuidv4()}_${file.name}`;
       const uploadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: process.env.MY_AWS_BUCKET_NAME,
         Key: fileName,
         Body: file.data,
         ContentType: file.mimetype,
