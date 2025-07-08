@@ -1,27 +1,17 @@
 import express from "express";
-import Shayari from "../models/Shayari.js";
+import {
+  getShayaribyCategory,
+  addShayari,
+  updateShayari,
+  deleteShayari,
+} from "../controllers/shayari.js";
+import { verifyToken } from "../middleware/authmiddleware.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const { category } = req.query;
-    const filter = category ? { categoryId: category } : {};
-    const shayaris = await Shayari.find(filter);
-    res.json(shayaris);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch shayaris" });
-  }
-});
+router.get("/", verifyToken, getShayaribyCategory); // GET all or by ?category=
+router.post("/", verifyToken, addShayari); // POST new
+router.put("/:id", verifyToken, updateShayari); // PUT update
+router.delete("/:id", verifyToken, deleteShayari); // DELETE
 
-router.post("/add", async (req, res) => {
-  try {
-    const { text, categoryId } = req.body;
-    const shayari = new Shayari({ text, categoryId });
-    await shayari.save();
-    res.status(201).json(shayari);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to add shayari" });
-  }
-});
 export default router;

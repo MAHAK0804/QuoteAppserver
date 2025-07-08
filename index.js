@@ -6,6 +6,8 @@ import fileUpload from "express-fileupload";
 
 import categoryRoutes from "./routes/categoryRoutes.js";
 import shayariRoutes from "./routes/shayariRoutes.js";
+import adminroutes from "./routes/authroutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +23,9 @@ mongoose
   })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
+
+app.use("/api/admin", adminroutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/shayaris", shayariRoutes);
