@@ -12,10 +12,19 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173", // your frontend URL
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(fileUpload());
 
+// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -24,9 +33,9 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
+// Routes
 app.use("/api/admin", adminroutes);
 app.use("/api/dashboard", dashboardRoutes);
-
 app.use("/api/categories", categoryRoutes);
 app.use("/api/shayaris", shayariRoutes);
 
