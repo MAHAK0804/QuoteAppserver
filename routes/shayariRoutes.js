@@ -5,13 +5,13 @@ import {
   updateShayari,
   deleteShayari,
 } from "../controllers/shayari.js";
-import { verifyToken } from "../middleware/authmiddleware.js";
+// import { verifyToken } from "../middleware/authmiddleware.js";
 
 const router = express.Router();
 
-router.get("/", verifyToken, getShayaribyCategory); // GET all or by ?category=
-router.post("/", verifyToken, addShayari); // POST new
-router.put("/:id", verifyToken, updateShayari); // PUT update
-router.delete("/:id", verifyToken, deleteShayari); // DELETE
+router.get("/", getShayaribyCategory); // GET all or by ?category=
+router.post("/", addShayari); // POST new
+router.put("/:id", updateShayari); // PUT update
+router.delete("/:id", deleteShayari); // DELETE
 
 export default router;
