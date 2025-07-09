@@ -9,8 +9,8 @@ import { verifyToken } from "../middleware/authmiddleware.js";
 
 const router = express.Router();
 
-router.get("/stats", verifyToken, getDashboardStats);
-router.get("/chart", verifyToken, getShayariChartData);
-router.get("/recent-shayaris", verifyToken, getRecentShayaris);
+router.get("/stats", getDashboardStats);
+router.get("/chart", getShayariChartData);
+router.get("/recent-shayaris", getRecentShayaris);
 
 export default router;
