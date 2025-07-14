@@ -8,6 +8,8 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import shayariRoutes from "./routes/shayariRoutes.js";
 import adminroutes from "./routes/authroutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import usersRoutes from "./routes/userroutes.js";
+import usersShayarisRoutes from "./routes/usersShayarisroutes.js";
 
 dotenv.config();
 
@@ -38,6 +40,8 @@ app.use("/api/admin", adminroutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/shayaris", shayariRoutes);
+app.use("/api/users/auth", usersRoutes);
+app.use("/api/users/shayaris", usersShayarisRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
