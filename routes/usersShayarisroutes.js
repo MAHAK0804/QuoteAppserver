@@ -26,5 +26,34 @@ router.get("/all", async (req, res) => {
     .sort({ createdAt: -1 });
   res.json(shayaris);
 });
+// Update Shayari by userId and shayariId
+router.put("/update/:shayariId", async (req, res) => {
+  const { shayariId } = req.params;
+  const { userId, text } = req.body;
+
+  try {
+    const user = await Users.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (!user.isVerifed)
+      return res.status(403).json({ message: "User not verified" });
+
+    const shayari = await UsersShayari.findOneAndUpdate(
+      { _id: shayariId, userId },
+      { text },
+      { new: true }
+    );
+
+    if (!shayari) {
+      return res
+        .status(404)
+        .json({ message: "Shayari not found or not owned by user" });
+    }
+
+    res.json({ message: "Shayari updated successfully", shayari });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong", error });
+  }
+});
 
 export default router;
