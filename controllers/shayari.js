@@ -3,11 +3,26 @@ import Shayari from "../models/Shayari.js";
 // 📥 GET all Shayaris or by Category
 export const getShayaribyCategory = async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, page = 1, limit = 10 } = req.query;
+
     const filter = category ? { categoryId: category } : {};
-    const shayaris = await Shayari.find(filter).sort({ createdAt: -1 });
-    res.json(shayaris);
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const total = await Shayari.countDocuments(filter);
+
+    const shayaris = await Shayari.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    res.json({
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit)),
+      shayaris,
+    });
   } catch (error) {
+    console.error("Pagination Error:", error);
     res.status(500).json({ error: "Failed to fetch shayaris" });
   }
 };
