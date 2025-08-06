@@ -1,6 +1,6 @@
 import express from "express";
 import Users from "../models/Users.js";
-import UsersShayari from "../models/UsersShayari.js";
+import UserQuotes from "../models/UserQuotes.js";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post("/add", async (req, res) => {
   const user = await Users.findById(userId);
   if (!user) return res.status(404).json({ message: "User not found" });
   if (user.isVerifed) {
-    const shayari = new UsersShayari({ userId, text });
+    const shayari = new UserQuotes({ userId, text });
     await shayari.save();
     res.json({ message: "Shayari added", shayari });
   } else {
@@ -21,7 +21,7 @@ router.post("/add", async (req, res) => {
 
 // Get All Shayaris
 router.get("/all", async (req, res) => {
-  const shayaris = await UsersShayari.find()
+  const shayaris = await UserQuotes.find()
     .populate("userId", "email phone")
     .sort({ createdAt: -1 });
   res.json(shayaris);
@@ -38,7 +38,7 @@ router.put("/update/:shayariId", async (req, res) => {
     if (!user.isVerifed)
       return res.status(403).json({ message: "User not verified" });
 
-    const shayari = await UsersShayari.findOneAndUpdate(
+    const shayari = await UserQuotes.findOneAndUpdate(
       { _id: shayariId, userId },
       { text },
       { new: true }

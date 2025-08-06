@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const shayariSchema = new mongoose.Schema(
+const quoteSchema = new mongoose.Schema(
   {
     text: String,
     categoryId: {
@@ -11,4 +11,4 @@ const shayariSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Shayari", shayariSchema);
+export default mongoose.model("Quotes", quoteSchema);
