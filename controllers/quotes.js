@@ -3,7 +3,7 @@ import Quotes from "../models/Quotes.js";
 // 📥 GET all Shayaris or by Category
 export const getQuotesbyCategory = async (req, res) => {
   try {
-    const { category, page = 1, limit = 10 } = req.query;
+    const { category, page = 1, limit } = req.query;
 
     const filter = category ? { categoryId: category } : {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
