@@ -10,6 +10,8 @@ import adminroutes from "./routes/authroutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import usersRoutes from "./routes/userroutes.js";
 import usersQuotesroutes from "./routes/usersQuotesroutes.js";
+import exploreroutes from "./routes/explore.js";
+import soundroutes from "./routes/sound.js";
 
 dotenv.config();
 
@@ -42,6 +44,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/quotes", quoteRoutes);
 app.use("/api/users/auth", usersRoutes);
 app.use("/api/users/quotes", usersQuotesroutes);
+app.use("/api/explore", exploreroutes);
+app.use("/api/sounds", soundroutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
