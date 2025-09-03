@@ -3,6 +3,7 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { v4 as uuidv4 } from "uuid";
 import dotenv from "dotenv";
+import Quotes from "../models/Quotes.js";
 dotenv.config();
 
 const s3Client = new S3Client({
@@ -107,7 +108,7 @@ export const deleteCategory = async (req, res) => {
     }
 
     // Delete all quotes with this category
-    await Quote.deleteMany({ category: id });
+    await Quotes.deleteMany({ category: id });
 
     res.json({ message: "Category and its quotes deleted successfully" });
   } catch (error) {
