@@ -100,13 +100,18 @@ export const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Category.findByIdAndDelete(id);
-    if (!deleted) {
+    // Find & delete category
+    const deletedCategory = await Category.findByIdAndDelete(id);
+    if (!deletedCategory) {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    res.json({ message: "Category deleted successfully" });
+    // Delete all quotes with this category
+    await Quote.deleteMany({ category: id });
+
+    res.json({ message: "Category and its quotes deleted successfully" });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Failed to delete category" });
   }
 };
