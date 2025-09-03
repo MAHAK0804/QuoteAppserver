@@ -57,10 +57,8 @@ router.post("/", async (req, res) => {
       title,
       url: soundResult.Location,
       key: soundFileName,
-      image:
-        imageResult.Location ||
-        "https://shayaripoetry.s3.ap-south-1.amazonaws.com/sounds/images/common+sound+image.svg",
-      imageKey: imageFileName || "default image",
+      image: imageResult.Location,
+      imageKey: imageFileName,
     });
 
     await newSound.save();
