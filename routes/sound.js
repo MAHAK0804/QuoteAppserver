@@ -58,14 +58,9 @@ router.post("/", async (req, res) => {
       finalImageUrl = imageResult.Location;
       imageKey = imageFileName;
     } else if (imageUrl) {
-      // Use provided URL
-      finalImageUrl = imageUrl;
-      imageKey = "url"; // optional placeholder
-    } else {
-      // Default image if neither file nor URL provided
       finalImageUrl =
         "https://shayaripoetry.s3.ap-south-1.amazonaws.com/sounds/images/common+sound+image.svg";
-      imageKey = "default";
+      imageKey = "url";
     }
 
     const newSound = new Sound({
