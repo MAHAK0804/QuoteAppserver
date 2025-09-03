@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
       imageKey = imageFileName;
     } else if (imageUrl) {
       finalImageUrl =
-        "https://shayaripoetry.s3.ap-south-1.amazonaws.com/sounds/images/common+sound+image.svg";
+        "https://shayaripoetry.s3.ap-south-1.amazonaws.com/sounds/images/3f2d664a-9091-429e-8a11-55ca6f08064a.jpg";
       imageKey = "url";
     }
 
