@@ -17,17 +17,15 @@ const s3Client = new S3Client({
 // ✅ Upload sound + image
 router.post("/", async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, image: imageUrl } = req.body; // imageUrl can be a string URL
     const soundFile = req.files?.sound;
     const imageFile = req.files?.image;
 
-    if (!title || !soundFile || !imageFile) {
-      return res
-        .status(400)
-        .json({ error: "Title, sound, and image are required" });
+    if (!title || !soundFile) {
+      return res.status(400).json({ error: "Title and sound are required" });
     }
 
-    // Upload sound
+    // ✅ Upload sound to S3
     const soundFileName = `sounds/${uuidv4()}_${soundFile.name}`;
     const soundUploader = new Upload({
       client: s3Client,
@@ -40,25 +38,42 @@ router.post("/", async (req, res) => {
     });
     const soundResult = await soundUploader.done();
 
-    // Upload image
-    const imageFileName = `sounds/images/${uuidv4()}_${imageFile.name}`;
-    const imageUploader = new Upload({
-      client: s3Client,
-      params: {
-        Bucket: process.env.MY_AWS_BUCKET_NAME,
-        Key: imageFileName,
-        Body: imageFile.data,
-        ContentType: imageFile.mimetype,
-      },
-    });
-    const imageResult = await imageUploader.done();
+    let finalImageUrl = "";
+    let imageKey = "";
+
+    // ✅ Check if image is a file or URL
+    if (imageFile) {
+      // Upload image to S3
+      const imageFileName = `sounds/images/${uuidv4()}_${imageFile.name}`;
+      const imageUploader = new Upload({
+        client: s3Client,
+        params: {
+          Bucket: process.env.MY_AWS_BUCKET_NAME,
+          Key: imageFileName,
+          Body: imageFile.data,
+          ContentType: imageFile.mimetype,
+        },
+      });
+      const imageResult = await imageUploader.done();
+      finalImageUrl = imageResult.Location;
+      imageKey = imageFileName;
+    } else if (imageUrl) {
+      // Use provided URL
+      finalImageUrl = imageUrl;
+      imageKey = "url"; // optional placeholder
+    } else {
+      // Default image if neither file nor URL provided
+      finalImageUrl =
+        "https://shayaripoetry.s3.ap-south-1.amazonaws.com/sounds/images/common+sound+image.svg";
+      imageKey = "default";
+    }
 
     const newSound = new Sound({
       title,
       url: soundResult.Location,
       key: soundFileName,
-      image: imageResult.Location,
-      imageKey: imageFileName,
+      image: finalImageUrl,
+      imageKey: imageKey,
     });
 
     await newSound.save();
